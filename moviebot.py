@@ -7,34 +7,27 @@ app = Flask(__name__)
  
  
 @app.route('/keyboard')
-def Keyboard():
+def keyboard():
  
     dataSend = {
-        "type" : "buttons",
-        "buttons" : ["시작하기", "도움말"]
+        "type" : "text",
     }
  
     return jsonify(dataSend)
 
 
 @app.route('/message', methods=['POST'])
-def Message():
+def message():
     
     dataReceive = request.get_json()
     content = dataReceive['content']
  
-    if content == "시작하기":
-        dataSend = {
-            "message": {
-                "text": "시작하기"
-            }
+    dataSend = {
+        "message": {
+            "text": content,
         }
-    elif content == "도움말":
-        dataSend = {
-            "message": {
-                "text": "도움말"
-            }
-        }
+    }
+
     return jsonify(dataSend)
 
 
