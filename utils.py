@@ -29,8 +29,7 @@ def get_title_list_of_movies(title='', genre=''):
     return movie_title_list
 
 
-def get_naver_link_list_of_movies(title):
-    naver_link_list = []
+def get_naver_movie_info(title):
     if title:
         response = requests.get(
             NAVER_MOVIE_API+ '?query=' + title,
@@ -40,6 +39,12 @@ def get_naver_link_list_of_movies(title):
             }
         )
         json_data = json.loads(response.text)
-        naver_link = json_data['items'][0]['link']
-        naver_link_list.append(naver_link)
-    return naver_link_list
+        if json_data['total'] > 0:
+            title = json_data['items'][0]['title']
+            naver_link = json_data['items'][0]['link']
+            movie_info = '{title} : {naver_link}'.format(
+                    title=title,
+                    naver_link=naver_link
+            )
+            return movie_info 
+    return ''
