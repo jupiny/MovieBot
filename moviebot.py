@@ -25,10 +25,11 @@ def message():
     content = json_data['content']
  
     title_list = get_title_list_of_movies(title=content)
-    naver_movie_info_list = [
-        get_naver_movie_info(title)
-        for title in title_list
-    ]
+    naver_movie_info_list = []
+    for title in title_list:
+        movie_info = get_naver_movie_info(title)
+        if movie_info:
+            naver_movie_info_list.append(movie_info)
     text = '\n'.join(naver_movie_info_list)
     data= {
         "message": {
