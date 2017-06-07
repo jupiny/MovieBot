@@ -1,6 +1,9 @@
 import os
 
 from flask import Flask, request, jsonify
+
+from utils import get_title_list_of_movies
+from utils import get_naver_movie_info
  
  
 app = Flask(__name__)
@@ -18,17 +21,22 @@ def keyboard():
 
 @app.route('/message', methods=['POST'])
 def message():
-    
-    dataReceive = request.get_json()
-    content = dataReceive['content']
+    json_data = request.get_json()
+    content = json_data['content']
  
-    dataSend = {
+    title_list = get_title_list_of_movies(title=content)
+    naver_movie_info_list = [
+        get_naver_movie_info(title)
+        for title in title_list
+    ]
+    text = '\n'.join(naver_movie_info_list)
+    data= {
         "message": {
-            "text": content,
+            "text": text,
         }
     }
 
-    return jsonify(dataSend)
+    return jsonify(data)
 
 
 if __name__ == "__main__":
