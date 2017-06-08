@@ -17,12 +17,13 @@ app = Flask(__name__)
  
 @app.route('/keyboard')
 def keyboard():
- 
-    dataSend = {
-        "type" : "text",
+
+    data = {
+        "type": "buttons",
+        "buttons": ["시작하기"],
     }
- 
-    return jsonify(dataSend)
+
+    return jsonify(data)
 
 
 @app.route('/message', methods=['POST'])
@@ -33,7 +34,11 @@ def message():
     genre_match = re.search(r'^장르 ', content)
 
     text = ''
-    if title_match or genre_match:
+    if content in ['시작하기', '도움말']:
+        text = '[도움말]\n\n1. 제목으로 검색하기\n=> "제목 (검색할 제목명)"\n\n2. 장르로 검색하기\n=> "장르 (검색할 장르명)"\n\n3. 모든 장르 목록 보기\n=> "모든 장르"\n\n4. 도움말 다시 보기\n=> "도움말"'
+    elif content == '모든 장르':
+        text = '\n'.join(GENRE_LIST)
+    elif title_match or genre_match:
         if title_match:
             content_match = title_match
             search_type = TITLE
@@ -47,6 +52,9 @@ def message():
     data= {
         "message": {
             "text": text,
+        },
+        "keyboard": {
+            "type": "text",
         }
     }
 
@@ -60,7 +68,7 @@ def get_message_text(search_word, search_type):
                 return '검색할 제목은 최소 2글자 이상이어야 합니다.'
             title_list = get_title_list_of_movies(title=search_word)
         if search_type == GENRE:
-            if search_word not in GENRE_LIST:
+            if search_word.lower() not in GENRE_LIST:
                 return '존재하지 않는 장르입니다.'
             title_list = get_title_list_of_movies(genre=search_word)
         naver_movie_info_list = []
