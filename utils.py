@@ -41,6 +41,7 @@ def get_naver_movie_info(title):
         json_data = json.loads(response.text)
         if json_data['total'] > 0:
             title = json_data['items'][0]['title']
+            title = re.sub('<b>|</b>', '', title) # <b>, </b> 태그 제거
             naver_link = json_data['items'][0]['link']
             movie_info = '{title} : {naver_link}'.format(
                     title=title,
