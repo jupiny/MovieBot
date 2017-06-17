@@ -1,12 +1,15 @@
 # MovieBot
 카카오톡 영화봇
 
+<img src="./img/example.jpeg" width="300">
+
 ## 사용법
 1. 카카오톡에서 **영화봇** 을 검색해주세요.
 2. **영화봇** 을 클릭하여 1:1 채팅을 시작한다.
 
-## 예시
-<img src="./img/example.jpeg" width="300">
+## 시연 영상
+
+https://www.youtube.com/watch?v=GzBHi2QZcQI&feature=youtu.be
 
 
 ## 주의사항
