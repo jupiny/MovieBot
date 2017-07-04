@@ -14,7 +14,7 @@ GENRE_LIST = ['드라마', '판타지', '서부', '공포', '로맨스', '모험
               '에로', '서스펜스', '서사', '블랙코미디', '실험', '영화카툰', '영화음악', '영화패러디포스터',]
  
 app = Flask(__name__)
- 
+
  
 @app.route('/keyboard')
 def keyboard():
@@ -95,4 +95,4 @@ def get_message_text(search_type, search_word=''):
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=8090)
+    app.run(host='0.0.0.0')
