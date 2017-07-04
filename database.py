@@ -36,6 +36,36 @@ def get_movies_by_genre(genre):
     return rows
 
 
+def get_movies_by_genre(genre):
+    conn = get_connection()
+    curs = conn.cursor(pymysql.cursors.DictCursor)
+    sql = 'SELECT * FROM movie WHERE genre LIKE %s'
+    curs.execute(sql, ('%'+genre+'%',))
+    rows = curs.fetchall()
+    conn.close()
+    return rows
+
+
+def get_movies_by_actor(actor):
+    conn = get_connection()
+    curs = conn.cursor(pymysql.cursors.DictCursor)
+    sql = 'SELECT * FROM movie WHERE actor LIKE %s'
+    curs.execute(sql, ('%'+actor+'%',))
+    rows = curs.fetchall()
+    conn.close()
+    return rows
+
+
+def get_movies_by_director(director):
+    conn = get_connection()
+    curs = conn.cursor(pymysql.cursors.DictCursor)
+    sql = 'SELECT * FROM movie WHERE director LIKE %s'
+    curs.execute(sql, ('%'+director+'%',))
+    rows = curs.fetchall()
+    conn.close()
+    return rows
+
+
 def add_movie(naver_code, kor_title, eng_title, genre, director, actor):
     conn = get_connection()
     curs = conn.cursor(pymysql.cursors.DictCursor)
