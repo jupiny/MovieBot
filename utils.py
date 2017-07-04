@@ -1,51 +1,34 @@
-import json
 import random
-import re
-import os
 
-import requests
+from database import get_all_movies, \
+                     get_movies_by_genre, \
+                     get_movies_by_actor, \
+                     get_movies_by_director
 
 
-MY_OPENAPI_SERVER = 'http://155.230.25.63:8080'
+NAVER_MOVIE_DETAIL_URL = 'http://movie.naver.com/movie/bi/mi/basic.nhn?code={code}'
 MAX_DISPLAY_NUM = 5
-NAVER_MOVIE_API = 'https://openapi.naver.com/v1/search/movie.json'
-NAVER_CLIENT_ID = os.environ.get('NAVER_CLIENT_ID')
-NAVER_CLIENT_SECRET = os.environ.get('NAVER_CLIENT_SECRET')
 
 
-def get_title_list_of_movies(title='', genre=''):
-    if title:
-        response = requests.get(MY_OPENAPI_SERVER + '/movies/?title=' + title)
-    elif genre:
-        response = requests.get(MY_OPENAPI_SERVER + '/movies/?genres=' + genre)
+def get_movie_list(genre='', actor='', director=''):
+    if genre:
+        movie_list = get_movies_by_genre(genre)
+    elif actor:
+        movie_list = get_movies_by_actor(actor)
+    elif director:
+        movie_list = get_movies_by_director(director)
     else:
-        response = requests.get(MY_OPENAPI_SERVER + '/movies')
-    json_data = json.loads(response.text)
-    if len(json_data) >= MAX_DISPLAY_NUM:
-        json_data = random.sample(json_data, MAX_DISPLAY_NUM)
-
-    year_parttern = r' \(\d{4}\)$'
-    movie_title_list = [re.sub(year_parttern, '', movie['title']) for movie in json_data]
-    return movie_title_list
+        movie_list = get_all_movies()
+    if len(movie_list) >= MAX_DISPLAY_NUM:
+        movie_list = random.sample(movie_list, MAX_DISPLAY_NUM)
+    return movie_list
 
 
-def get_naver_movie_info(title):
-    if title:
-        response = requests.get(
-            NAVER_MOVIE_API+ '?query=' + title,
-            headers={
-                'X-Naver-Client-Id': NAVER_CLIENT_ID,
-                'X-Naver-Client-Secret': NAVER_CLIENT_SECRET,
-            }
-        )
-        json_data = json.loads(response.text)
-        if json_data['total'] > 0:
-            title = json_data['items'][0]['title']
-            title = re.sub('<b>|</b>', '', title) # <b>, </b> 태그 제거
-            naver_link = json_data['items'][0]['link']
-            movie_info = '{title} : {naver_link}'.format(
-                    title=title,
-                    naver_link=naver_link
-            )
-            return movie_info 
-    return ''
+def formalize_movie(movie):
+    title = movie.get('kor_title')
+    naver_link = NAVER_MOVIE_DETAIL_URL.format(code=movie.get('naver_code'))
+    formatted_movie = '{title} : {naver_link}'.format(
+        title=title,
+        naver_link=naver_link,
+    )
+    return formatted_movie
