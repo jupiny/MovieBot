@@ -1,0 +1,2 @@
+crawling:
+	- python scripts.py
