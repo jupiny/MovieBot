@@ -16,9 +16,7 @@
 
 ## 예시 영상
 
-<iframe width="640" height="360"
-src="https://www.youtube.com/embed/tGqNzNno5O4">
-</iframe>
+<a href="https://www.youtube.com/watch?v=tGqNzNno5O4"><img src="https://img.youtube.com/vi/tGqNzNno5O4/0.jpg" width="640" height="360" target="_blank"></a>
 
 ## 주의사항
 비용을 지불하지 않기 위해 동아리(**경북대학교 GNB 동아리**) 컴퓨터로 서버를 운영하고 있고, 불의의 사고(?)로 컴퓨터가 종료될 시 응답을 받지 못할 수 도 있습니다.
