@@ -32,6 +32,9 @@ def message():
     json_data = request.get_json()
     content = json_data['content']
 
+    with open('./log/query.log', 'a') as log_file:
+        log_file.write(content + '\n')
+
     genre_match = re.search(r'^장르 *', content)
     actor_match = re.search(r'^배우 *', content)
     director_match = re.search(r'^감독 *', content)
@@ -44,10 +47,6 @@ def message():
     elif content == '전체 장르':
         text = '\n'.join(GENRE_LIST)
     elif genre_match or actor_match or director_match:
-
-        with open('./log/query.log', 'a') as log_file:
-            log_file.write(content + '\n')
-
         if genre_match:
             content_match = genre_match
             search_type = GENRE
